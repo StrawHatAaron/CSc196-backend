@@ -191,23 +191,31 @@ namespace MlaWebApi.Controllers
                 sqlada.Fill(dsData);
 
                 var response = Request.CreateResponse<Tasks>(System.Net.HttpStatusCode.Found, null);
-                cnn.Close();
+
                 ctx.Commit();
+                cnn.Close();
+
                 return response;
             }
             catch (Exception e)
             {
+                
                 var response = Request.CreateResponse<Tasks>(System.Net.HttpStatusCode.BadRequest, null);
+                ctx.Rollback();
                 cnn.Close();
+
                 return response;
             }
 
         }
         public HttpResponseMessage PostTask(Tasks tasks)
         {
-           // MessageBox.Show(tasks.ToString());
-           // MessageBox.Show(tasks.repeatTask);
+            //MessageBox.Show(tasks.ToString());
+            //MessageBox.Show(tasks.repeatTask);
             //MessageBox.Show(tasks.subject_id);
+            CommittableTransaction ctx = new CommittableTransaction();
+
+
             char[] text1 = tasks.repeatTask.ToCharArray();
             ArrayList array = new ArrayList();
             foreach (char s in text1)
@@ -245,6 +253,8 @@ namespace MlaWebApi.Controllers
             DataSet dsData = new DataSet("tasks");
             cnn = new SqlConnection(cfmgr);
             cnn.Open();
+            cnn.EnlistTransaction(ctx);
+
             String idInstructor = "";
             String[] idStudent;
 
@@ -326,13 +336,22 @@ namespace MlaWebApi.Controllers
                         }
                     }
                     var response = Request.CreateResponse<Tasks>(System.Net.HttpStatusCode.Created, null);
+
+
+                    ctx.Commit();
                     cnn.Close();
+
+
                     return response;
                 }
                 else
                 {
                     var response = Request.CreateResponse<Tasks>(System.Net.HttpStatusCode.BadRequest, null);
+
+                    ctx.Rollback();
                     cnn.Close();
+
+
                     return response;
                 }
             }
@@ -340,7 +359,10 @@ namespace MlaWebApi.Controllers
             {
                 //MessageBox.Show(e.ToString());
                 var response = Request.CreateResponse<Tasks>(System.Net.HttpStatusCode.BadRequest, tasks);
+
+                ctx.Rollback();
                 cnn.Close();
+
                 return response;
             }
         }

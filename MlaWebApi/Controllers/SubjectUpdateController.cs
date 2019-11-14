@@ -33,7 +33,10 @@ namespace MlaWebApi.Controllers
                     SqlDataAdapter sqlada = new SqlDataAdapter(comm);
                     sqlada.Fill(dsData);
 
-                    throw new System.ArgumentException("Testing transaction", "original");
+
+                    //throw to test the transaction in the backend
+                    //throw new System.ArgumentException("Testing transaction", "original");
+
 
                     var response = Request.CreateResponse<Subject>(System.Net.HttpStatusCode.Found, subject);
                     cnn.Close();

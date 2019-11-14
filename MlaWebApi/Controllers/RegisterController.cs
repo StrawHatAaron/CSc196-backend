@@ -161,7 +161,7 @@ namespace MlaWebApi.Controllers
                     sqlada.Fill(dsData);
 
                     //throwing exception to test transaction
-                    throw new System.ArgumentException("Testing transaction", "original");
+                    //throw new System.ArgumentException("Testing transaction", "original");
 
                     var response = Request.CreateResponse<Register>(System.Net.HttpStatusCode.Created, register);
 

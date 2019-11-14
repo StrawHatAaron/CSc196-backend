@@ -49,7 +49,7 @@ namespace MlaWebApi.Controllers
                     Sqlda7.Fill(dsData);
 
                     //throwing exception for transaction
-                    throw new System.ArgumentException("Testing transaction", "original");
+                    //throw new System.ArgumentException("Testing transaction", "original");
 
                     var response = Request.CreateResponse<Tasks>(System.Net.HttpStatusCode.Found, null);
                     cnn.Close();
